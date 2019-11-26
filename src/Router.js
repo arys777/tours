@@ -13,6 +13,7 @@ const Router = () => (
       <Route path='/employees' component={Table} />
       <Route path='/countries' component={Table} />
       <Route path='/tours' component={Table} />
+      <Route path='/contracts' component={Table} />
     </Switch>
   </main>
 );

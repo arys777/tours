@@ -11,7 +11,9 @@ import {
   Map as MapIcon,
   Work as WorkIcon,
   FlightLand as FlightLandIcon,
-  Person as PersonIcon
+  Person as PersonIcon,
+  Receipt as ReceiptIcon,
+  Print as PrintIcon
 } from '@material-ui/icons';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
@@ -45,6 +47,7 @@ const Header = () => {
   const employeesMatch = useRouteMatch({path: '/employees'});
   const countriesMatch = useRouteMatch({path: '/countries'});
   const toursMatch = useRouteMatch({path: '/tours'});
+  const contractsMatch = useRouteMatch({path: '/contracts'});
   const location = useLocation();
   const classes = useStyles();
   console.log(location);
@@ -87,6 +90,11 @@ const Header = () => {
         <DrawerLink to='employees' text='Сотрудники' icon={<WorkIcon />} selected={!!employeesMatch}/>
         <DrawerLink to='countries' text='Страны' icon={<MapIcon />} selected={!!countriesMatch}/>
         <DrawerLink to='tours' text='Туры' icon={<FlightLandIcon />} selected={!!toursMatch}/>
+        <DrawerLink to='contracts' text='Договора' icon={<ReceiptIcon />} selected={!!contractsMatch}/>
+      </List>
+      <Divider />
+      <List>
+        <DrawerLink to='reports' text='Отчеты' icon={<PrintIcon />} selected={!!contractsMatch}/>
       </List>
     </div>
   );

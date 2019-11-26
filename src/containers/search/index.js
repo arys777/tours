@@ -8,10 +8,10 @@ import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 
+import Dialog from '../../components/Dialog';
 import useStyles from './styles';
 import client from '../../client';
 import images from '../../images';
@@ -30,10 +30,7 @@ function Search() {
     tours: []
   });
   const [data, setData] = React.useState([]);
-  const [errors, setErrors] = React.useState({
-    countryId: false,
-    tourId: false
-  });
+  const [dialog, setDialog] = React.useState({ open: false });
 
   React.useEffect(() => {
     client
@@ -59,6 +56,27 @@ function Search() {
       })
   };
   
+  const handleBookSuccess = (tour) => {
+    alert(tour.TourName);
+  }
+
+  const showDialog = tour => {
+    setDialog({
+      open: true,
+      closeDialog: () => setDialog({ open: false }),
+      onHandleSuccess: () => handleBookSuccess(tour),
+      content: {
+        successButtonText: 'Забронировать',
+        title: `Забронировать  ${tour.TourName}`,
+        body: (
+          <Typography variant="h6">
+            {`Вы собираетесь бронировать тур: ${tour.TourName}, в ${tour.CountryName}, за ${tour.TourPrice} тг`}
+          </Typography>
+        )
+      }
+    });
+  }
+
   return (
     <Container>
       <div className={classes.root}>
@@ -67,7 +85,6 @@ function Search() {
             <FormControl className={classes.formControl}>
               <InputLabel id="select-place-label">Куда лететь</InputLabel>
               <Select
-                error={errors.countryId}
                 labelId="select-place-label"
                 id="select-place"
                 value={countryId}
@@ -84,7 +101,6 @@ function Search() {
             <FormControl className={classes.formControl}>
               <InputLabel id="select-tours-label">Выберите тур</InputLabel>
               <Select
-                error={errors.tourId}
                 labelId="select-tours-label"
                 id="select-tours"
                 value={tourId}
@@ -101,7 +117,6 @@ function Search() {
             <FormControl className={classes.formControl}>
               <InputLabel id="select-duration-label">Выберите длительность</InputLabel>
               <Select
-                error={errors.tourId}
                 labelId="select-duration"
                 id="select-duration"
                 value={duration}
@@ -150,7 +165,7 @@ function Search() {
                   <Grid item xs={2}>
                     <img style={{ maxWidth: "100%" }} src={images[Math.floor(Math.random() * 10)]} alt={tour.TourName} />
                   </Grid>
-                  <Grid item xs={10}>
+                  <Grid item xs={8}>
                     <div style={{ margin: 10 }}>
                       <Typography variant="h5" component="h3">
                         {`${tour.CountryName}, ${tour.TourName}`}
@@ -161,12 +176,16 @@ function Search() {
                       </Typography>
                     </div>
                   </Grid>
+                  <Grid item xs={2}>
+                    <Button onClick={() => showDialog(tour)} color="secondary" variant="contained">Забронировать</Button>
+                  </Grid>
                 </Grid>
               </Paper>
             </Grid>
           ))}
         </Grid>
       </div>
+      <Dialog {...dialog} />
     </Container>
   );
 }
