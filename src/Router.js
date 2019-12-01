@@ -5,6 +5,9 @@ import Search from './containers/search';
 import Table from './containers/table';
 import Reports from './containers/reports';
 import Procedures from './containers/procedures';
+import Triggers from './containers/triggers';
+import Checks from './containers/checks';
+import Indexes from './containers/indexes';
 
 const Router = () => (
   <main>
@@ -18,6 +21,9 @@ const Router = () => (
       <Route path='/contracts' component={Table} />
       <Route path='/reports' component={Reports} />
       <Route path='/procedures' component={Procedures} />
+      <Route path='/triggers' component={Triggers} />
+      <Route path='/checks' component={Checks} />
+      <Route path='/indexes' component={Indexes} />
     </Switch>
   </main>
 );

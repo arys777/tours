@@ -17,10 +17,21 @@ const search = ({ countryId, tourId, duration, maxPrice }) =>
 
 const getSearchData = () => instance.get('/searchData');
 
+const createPayment = params => instance.post('/createPayment', params);
+
+const createContract = params => instance.post('/createContract', params);
+
+const searchByCountryName = countryName => instance.get('/searchByCountryName', { params: {
+  country_name: countryName 
+}});
+
 const getEntityData = instance.get;
 
 export default {
   search,
   getSearchData,
-  getEntityData
+  getEntityData,
+  createPayment,
+  createContract,
+  searchByCountryName,
 };
