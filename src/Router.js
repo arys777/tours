@@ -3,6 +3,8 @@ import { Switch, Route } from 'react-router-dom'
 
 import Search from './containers/search';
 import Table from './containers/table';
+import Reports from './containers/reports';
+import Procedures from './containers/procedures';
 
 const Router = () => (
   <main>
@@ -14,6 +16,8 @@ const Router = () => (
       <Route path='/countries' component={Table} />
       <Route path='/tours' component={Table} />
       <Route path='/contracts' component={Table} />
+      <Route path='/reports' component={Reports} />
+      <Route path='/procedures' component={Procedures} />
     </Switch>
   </main>
 );

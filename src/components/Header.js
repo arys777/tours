@@ -13,7 +13,11 @@ import {
   FlightLand as FlightLandIcon,
   Person as PersonIcon,
   Receipt as ReceiptIcon,
-  Print as PrintIcon
+  Print as PrintIcon,
+  Functions as FunctionsIcon,
+  DoneAll as DoneAllIcon,
+  List as ListIcon,
+  SlowMotionVideo as SlowMotionVideoIcon
 } from '@material-ui/icons';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
@@ -48,9 +52,13 @@ const Header = () => {
   const countriesMatch = useRouteMatch({path: '/countries'});
   const toursMatch = useRouteMatch({path: '/tours'});
   const contractsMatch = useRouteMatch({path: '/contracts'});
+  const reportsMatch = useRouteMatch({path: '/reports'});
+  const proceduresMatch = useRouteMatch({path: '/procedures'});
+  const checksMatch = useRouteMatch({path: '/checks'});
+  const indexesMatch = useRouteMatch({path: '/indexes'});
+  const triggersMatch = useRouteMatch({path: '/triggers'});
   const location = useLocation();
   const classes = useStyles();
-  console.log(location);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const toggleDrawer = open => event => {
@@ -94,7 +102,11 @@ const Header = () => {
       </List>
       <Divider />
       <List>
-        <DrawerLink to='reports' text='Отчеты' icon={<PrintIcon />} selected={!!contractsMatch}/>
+        <DrawerLink to='reports' text='Отчеты' icon={<PrintIcon />} selected={!!reportsMatch}/>
+        <DrawerLink to='procedures' text='Хранимые процедуры' icon={<FunctionsIcon />} selected={!!proceduresMatch}/>
+        <DrawerLink to='triggers' text='Триггеры' icon={<SlowMotionVideoIcon />} selected={!!triggersMatch}/>
+        <DrawerLink to='checks' text='Проверки (Checks)' icon={<DoneAllIcon />} selected={!!checksMatch}/>
+        <DrawerLink to='indexes' text='Индексы' icon={<ListIcon />} selected={!!indexesMatch}/>
       </List>
     </div>
   );

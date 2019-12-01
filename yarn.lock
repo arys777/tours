@@ -8431,6 +8431,11 @@ react-is@^16.8.1, react-is@^16.8.4:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.10.1.tgz#0612786bf19df406502d935494f0450b40b8294f"
   integrity sha512-BXUMf9sIOPXXZWqr7+c5SeOKJykyVr2u0UDzEf4LNGc6taGkQe1A9DFD07umCIXz45RLr9oAAwZbAJ0Pkknfaw==
 
+react-print-tool@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/react-print-tool/-/react-print-tool-3.0.0.tgz#40d6f6c693b9440cd774998982d155e864d5b06a"
+  integrity sha512-zpG7SqLz7BzDqZOkn/45jRWaKgRS7BQNp7W3CB6svo+SNBuk3tq6L2Vn1Zr4aIXHAV4YnmwXmFINdFEP/SzH2w==
+
 react-router-dom@^5.1.2:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-5.1.2.tgz#06701b834352f44d37fbb6311f870f84c76b9c18"
