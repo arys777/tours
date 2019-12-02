@@ -8,6 +8,7 @@ import Procedures from './containers/procedures';
 import Triggers from './containers/triggers';
 import Checks from './containers/checks';
 import Indexes from './containers/indexes';
+import Queries from './containers/queries';
 
 const Router = () => (
   <main>
@@ -24,6 +25,7 @@ const Router = () => (
       <Route path='/triggers' component={Triggers} />
       <Route path='/checks' component={Checks} />
       <Route path='/indexes' component={Indexes} />
+      <Route path='/queries' component={Queries} />
     </Switch>
   </main>
 );

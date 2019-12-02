@@ -17,7 +17,8 @@ import {
   Functions as FunctionsIcon,
   DoneAll as DoneAllIcon,
   List as ListIcon,
-  SlowMotionVideo as SlowMotionVideoIcon
+  SlowMotionVideo as SlowMotionVideoIcon,
+  Send as SendIcon,
 } from '@material-ui/icons';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
@@ -57,6 +58,7 @@ const Header = () => {
   const checksMatch = useRouteMatch({path: '/checks'});
   const indexesMatch = useRouteMatch({path: '/indexes'});
   const triggersMatch = useRouteMatch({path: '/triggers'});
+  const queriesMatch = useRouteMatch({path: '/queries'});
   const location = useLocation();
   const classes = useStyles();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
@@ -102,6 +104,7 @@ const Header = () => {
       </List>
       <Divider />
       <List>
+        <DrawerLink to='queries' text='Запросы' icon={<SendIcon />} selected={!!queriesMatch}/>
         <DrawerLink to='reports' text='Отчеты' icon={<PrintIcon />} selected={!!reportsMatch}/>
         <DrawerLink to='procedures' text='Хранимые процедуры' icon={<FunctionsIcon />} selected={!!proceduresMatch}/>
         <DrawerLink to='triggers' text='Триггеры' icon={<SlowMotionVideoIcon />} selected={!!triggersMatch}/>
