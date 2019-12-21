@@ -3,17 +3,24 @@ import { Container, Typography, Button, CircularProgress } from '@material-ui/co
 import { printComponent } from "react-print-tool";
 
 import client from '../../client';
-import useStyles from './styles';
+import useStyles from '../queries/styles';
 import GenerativeTable from '../../components/GenerativeTable';
 import { parseData } from '../../utils';
 
-const Reports = () => {
-  const [incomeSumByEmployees, setIncomeSumByEmployees] = useState();
-  const [clientsByAddress, setClientsByAddress] = useState();
-  const [toursByCountry, setToursByCountry] = useState();
-  const [tourByPrice, setTourByPrice] = useState();
-  const [popularServices, setPopularServices] = useState();
+const Queries = () => {
   const classes = useStyles();
+  const [firstContract, setFirstContract] = useState();
+  const [financeReport, setFinanceReport] = useState({
+    sum: 0,
+    history: [],
+  });
+  const [toursSoldThisYear, setToursSoldThisYear] = useState();
+
+  const [financeReportData, setFinanceReportDate] = useState({
+    employee_id: 1,
+    date_start: '2019-01-01',
+    date_end: '2019-12-03',
+  });
 
   const handlePrint = async (title, data) =>
     await printComponent((
@@ -23,57 +30,56 @@ const Reports = () => {
       </Container>
     ));
 
-  const REPORT_QUERIES = [
-    { url: '/incomeSumByEmployees', setter: setIncomeSumByEmployees },
-    { url: '/clientsByAddress', setter: setClientsByAddress, params: { address: 'Address 2' } },
-    { url: '/toursByCountry', setter: setToursByCountry, params: { country: 'Turkey' } },
-    { url: '/tourByPrice', setter: setTourByPrice, params: { from: 1000, to: 2500 } },
-    { url: 'popularServices', setter: setPopularServices }
-  ];
-
   useEffect(() => {
-    Promise.all(
-      REPORT_QUERIES.map(({ url, setter, params={} }) =>
-        client
-          .getEntityData(url, { params })
-          .then(({ data }) => setter(data))
-      )
-    )
+    Promise.all([
+      client.getEntityData('/firstContract').then(({ data }) => setFirstContract(data)),
+      client.getEntityData('/toursSoldThisYear').then(({ data }) => setToursSoldThisYear(data)),
+    ]);
   }, []);
 
-  const tableData = useCallback(() => {
-    return [
-      { key: 'incomeSumByEmployees', data: parseData(incomeSumByEmployees), title: 'Сумма прихода по каждому из сотрудников в текущем месяце' },
-      { key: 'clientsByAddress', data: parseData(clientsByAddress), title: 'Список клиентов, проживающих по адресу «Address 2»' },
-      { key: 'toursByCountry', data: parseData(toursByCountry), title: 'Список туров в Турцию' },
-      { key: 'tourByPrice', data: parseData(tourByPrice), title: 'Стоимость туров, стоимость которых находится в диапазоне от «1000» до «2500»' },      
-      { key: 'popularServices', data: parseData(popularServices), title: 'Какой вид услуги больше всего затребован клиентами?' },
-    ];
-  }, [tourByPrice, incomeSumByEmployees, clientsByAddress, toursByCountry, popularServices]);
-
+  useEffect(() => {
+    client.getEntityData('/financeReport', { params: financeReportData }).then(({ data }) => setFinanceReport(data));
+  },[financeReportData]);
+  console.log({firstContract, financeReport, toursSoldThisYear });
   return (
-    <Container className={classes.root}>
-      {tableData().map(({ key, data, title }) => (
-        <Container className={classes.reportContainer} key={key}>
-          <Typography className={classes.title} variant="h5">{title}</Typography>
-          {data.headers.length > 0 ? (
-            <React.Fragment>
-              <GenerativeTable data={data} />
-              <Button
-                onClick={() => handlePrint(title, data)}
-                className={classes.button}
-                variant="contained"
-                color="secondary">
-                  Распечатать
-              </Button>
-            </React.Fragment>
-          ) : (
-            <CircularProgress thickness={5} size={30}/>
-          )}
-        </Container>
-      ))}
+    <Container>
+      <Container className={classes.reportContainer} key='firstContract'>
+        <Typography className={classes.title} variant="h5">1. «I-ый» договор</Typography>
+        <GenerativeTable data={parseData(firstContract)} />
+        <Button
+          onClick={() => handlePrint('«I-ый» договор', parseData(firstContract))}
+          className={classes.button}
+          variant="contained"
+          color="secondary">
+            Распечатать
+        </Button>
+      </Container>
+      <Container className={classes.reportContainer} key='financeReport'>
+        <Typography className={classes.title} variant="h5">2. Финансовый отчет на {financeReportData.date_start} : {financeReportData.date_end}, сотрудника: {financeReportData.employee_id}</Typography>
+        <Typography className={classes.title} variant="h5">Сумма: {financeReport.sum}</Typography>
+        <Typography className={classes.title} variant="h5">История платежей:</Typography>
+        <GenerativeTable data={parseData(financeReport.history)} />
+        <Button
+          onClick={() => handlePrint(`Финансовый отчет на ${financeReportData.date_start} : ${financeReportData.date_end}, сотрудника: ${financeReportData.employee_id}`, parseData(financeReport.history))}
+          className={classes.button}
+          variant="contained"
+          color="secondary">
+            Распечатать
+        </Button>
+      </Container>
+      <Container className={classes.reportContainer} key='toursSoldThisYear'>
+        <Typography className={classes.title} variant="h5">3. Список туров, реализованных в текущем году</Typography>
+        <GenerativeTable data={parseData(toursSoldThisYear)} />
+        <Button
+          onClick={() => handlePrint('Список туров, реализованных в текущем году', parseData(toursSoldThisYear))}
+          className={classes.button}
+          variant="contained"
+          color="secondary">
+            Распечатать
+        </Button>
+      </Container>
     </Container>
   );
 };
 
-export default Reports;
+export default Queries;
